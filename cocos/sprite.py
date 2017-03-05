@@ -106,17 +106,17 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
         opacity (int):
             the opacity (0=transparent, 255=opaque). Defaults to 255.
         color (tuple[int]):
-            the color to colorize the child (RGB 3-tuple). Defaults to 
+            the color to colorize the child (RGB 3-tuple). Defaults to
             (255,255,255).
         anchor (tuple[float]):
-            (x, y) - point from where the image will be positioned, 
-            rotated and scaled in pixels. For example 
+            (x, y) - point from where the image will be positioned,
+            rotated and scaled in pixels. For example
             ``(image.width/2, image.height/2)`` is the center (default).
     """
 
     def __init__(self, image, position=(0, 0), rotation=0, scale=1,
                  opacity=255, color=(255, 255, 255), anchor=None, **kwargs):
-    
+
         if isinstance(image, string_types):
             image = pyglet.resource.image(image)
 
@@ -125,9 +125,9 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
         self._image_anchor_x = 0
         self._image_anchor_y = 0
 
-        # These need to be forward-defined here because pyglet sprites don't have them.
-        self._scale_x = 1
-        self._scale_y = 1
+        # # These need to be forward-defined here because pyglet sprites don't have them.
+        # self._scale_x = 1
+        # self._scale_y = 1
 
         pyglet.sprite.Sprite.__init__(self, image, **kwargs)
         BatchableNode.__init__(self)
@@ -155,19 +155,19 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
         #: rotation in degrees of the sprite. Default: 0 degrees
         self.rotation = rotation
 
-        #: scale of the sprite where 1.0 is the default value
-        self.scale = scale
+        # #: scale of the sprite where 1.0 is the default value
+        # self.scale = scale
 
-        #: additional horizontal-only scale of the sprite where 1.0 is the default value
-        self.scale_x = 1
+        # #: additional horizontal-only scale of the sprite where 1.0 is the default value
+        # self.scale_x = 1
 
-        #: additional vertical-only scale of the sprite where 1.0 is the default value
-        self.scale_y = 1
+        # #: additional vertical-only scale of the sprite where 1.0 is the default value
+        # self.scale_y = 1
 
         #: opacity of the sprite where 0 is transparent and 255 is solid
         self.opacity = opacity
 
-        #: color of the sprite in R, G, B format where 0, 0, 0 is black and 
+        #: color of the sprite in R, G, B format where 0, 0, 0 is black and
         #: 255, 255, 255 is white
         self.color = color
 
@@ -231,7 +231,7 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
 
         :type: int
         """
-        return int(self._texture.width * self._scale * self._scale_x)
+        return int(self._texture.width * self._scale_x)
 
     @property
     def height(self):
@@ -239,10 +239,10 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
 
         Read-only.  Invariant under rotation.
 
-        Returns: 
+        Returns:
             int
         """
-        return int(self._texture.height * self._scale * self._scale_y)
+        return int(self._texture.height * self._scale_y)
 
     @BatchableNode.position.setter
     def position(self, p):
@@ -260,9 +260,9 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
         pyglet.sprite.Sprite.y.__set__(self, y)
 
     def contains(self, x, y):
-        """Test if the point is in the area covered by the (untransformed) 
+        """Test if the point is in the area covered by the (untransformed)
         :class:`Sprite` bounding box.
-        
+
         Returns:
             bool
         """
@@ -275,10 +275,10 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
         if y < sy or y > sy + self.height:
             return False
         return True
- 
+
     @property
     def image_anchor_x(self):
-        """float: x coordinate from where the image will be positioned, 
+        """float: x coordinate from where the image will be positioned,
         rotated and scaled in pixels.
         """
         return self._image_anchor_x
@@ -290,7 +290,7 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
 
     @property
     def image_anchor_y(self):
-        """float: y coordinate from where the image will be positioned, 
+        """float: y coordinate from where the image will be positioned,
         rotated and scaled in pixels.
         """
         return self._image_anchor_y
@@ -302,7 +302,7 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
 
     @property
     def image_anchor(self):
-        """tuple[float]: Point from where the image will be positioned, 
+        """tuple[float]: Point from where the image will be positioned,
         rotated and scaled in pixels.
         """
         return self._image_anchor_x, self._image_anchor_y
@@ -325,6 +325,7 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
 
     def _update_position(self):
         """Updates the vertex list"""
+
         if not self._visible:
             self._vertex_list.vertices[:] = [0, 0, 0, 0, 0, 0, 0, 0]
             return
@@ -333,10 +334,10 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
         if self.transform_anchor_x == self.transform_anchor_y == 0:
 
             if self._rotation:
-                x1 = -self._image_anchor_x * self._scale * self._scale_x
-                y1 = -self._image_anchor_y * self._scale * self._scale_y
-                x2 = x1 + img.width*self._scale*self._scale_x
-                y2 = y1 + img.height*self._scale*self._scale_y
+                x1 = -self._image_anchor_x * self._scale_x
+                y1 = -self._image_anchor_y  * self._scale_y
+                x2 = x1 + img.width * self._scale_x
+                y2 = y1 + img.height * self._scale_y
                 x = self._x
                 y = self._y
 
@@ -353,11 +354,11 @@ class Sprite(BatchableNode, pyglet.sprite.Sprite):
                 dy = int(x1*sr + y2*cr + y)
 
                 self._vertex_list.vertices[:] = [ax, ay, bx, by, cx, cy, dx, dy]
-            elif self._scale != 1.0 or self._scale_x != 1.0 or self._scale_y != 1.0:
-                x1 = int(self._x - self._image_anchor_x*self._scale*self._scale_x)
-                y1 = int(self._y - self._image_anchor_y*self._scale*self._scale_y)
-                x2 = int(x1 + img.width*self._scale*self._scale_x)
-                y2 = int(y1 + img.height*self._scale*self._scale_y)
+            elif self._scale_x != 1.0 or self._scale_y != 1.0:
+                x1 = int(self._x - self._image_anchor_x * self._scale_x)
+                y1 = int(self._y - self._image_anchor_y * self._scale_y)
+                x2 = int(x1 + img.width * self._scale_x)
+                y2 = int(y1 + img.height * self._scale_y)
                 self._vertex_list.vertices[:] = [x1, y1, x2, y1, x2, y2, x1, y2]
             else:
                 x1 = int(self._x - self._image_anchor_x)

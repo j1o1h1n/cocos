@@ -59,18 +59,18 @@ class CocosNode(object):
     """
     Cocosnode is the main element. Anything that gets drawn or contains things
     that gets drawn is a :class:`CocosNode`.
-    The most popular :class:`CocosNode` are :class:`cocos.scene.Scene`, 
+    The most popular :class:`CocosNode` are :class:`cocos.scene.Scene`,
     :class:`cocos.layer.base_layers.Layer` and :class:`cocos.sprite.Sprite`.
 
     The main features of a :class:`CocosNode` are:
-        - They can contain other :class:`CocosNode` (:meth:`add`, :meth:`get`, 
+        - They can contain other :class:`CocosNode` (:meth:`add`, :meth:`get`,
           :meth:`remove`, etc)
-        - They can schedule periodic callback (:meth:`schedule`, 
+        - They can schedule periodic callback (:meth:`schedule`,
           :meth:`schedule_interval`, etc)
-        - They can execute actions (:meth:`do`, :meth:`pause`, :meth:`stop`, 
+        - They can execute actions (:meth:`do`, :meth:`pause`, :meth:`stop`,
           etc)
 
-    Some :class:`CocosNode` provide extra functionality for them or their 
+    Some :class:`CocosNode` provide extra functionality for them or their
     children.
 
     Subclassing a :class:`CocosNode` usually means (one/all) of:
@@ -131,7 +131,7 @@ class CocosNode(object):
         #:      since the camera will be overridden by the transformations done
         #:      by the other attributes.
         #:
-        #: You can change the camera manually or by using the 
+        #: You can change the camera manually or by using the
         #: :class:`.Camera3DAction` action.
         self.camera = Camera()
 
@@ -235,7 +235,7 @@ class CocosNode(object):
         Schedule a function to be called every ``interval`` seconds.
 
         Specifying an interval of 0 prevents the function from being
-        called again (see :meth:`schedule` to call a function as often as 
+        called again (see :meth:`schedule` to call a function as often as
         possible).
 
         The callback function prototype is the same as for :meth:`schedule`.
@@ -245,11 +245,11 @@ class CocosNode(object):
         resumed when the node leaves or enters a scene.
 
         You should not have to schedule things using pyglet by yourself.
-        
+
         Arguments:
-            callback (a function): 
+            callback (a function):
                 The function to call when the timer elapsed.
-            interval (float): 
+            interval (float):
                 The number of seconds to wait between each call.
             *args: Variable length argument list passed to the ``callback``.
             **kwargs: Arbitrary keyword arguments  passed to the ``callback``.
@@ -304,7 +304,7 @@ class CocosNode(object):
 
         You should not unschedule things using pyglet that where scheduled
         by :meth:`schedule`/:meth:`schedule_interval`.
-        
+
         Arguments:
             callback (a function):
                 The function to remove from the schedule.
@@ -522,10 +522,10 @@ class CocosNode(object):
         """Removes a child given its name or object
 
         If the node was added with name, it is better to remove by name, else
-        the name will be unavailable for further adds (and will raise an 
+        the name will be unavailable for further adds (and will raise an
         Exception if add with this same name is attempted)
 
-        If the node was part of the active scene, its :meth:`on_exit` method 
+        If the node was part of the active scene, its :meth:`on_exit` method
         will be called.
 
         Arguments:
@@ -571,12 +571,12 @@ class CocosNode(object):
                 name of the reference to retrieve.
 
         Returns:
-            CocosNode: The child named 'name'. Will raise an ``Exception`` if 
+            CocosNode: The child named 'name'. Will raise an ``Exception`` if
             not present.
 
         Warning:
             If a node is added with name, then removing it differently
-            than by name will prevent the name to be recycled: attempting to add 
+            than by name will prevent the name to be recycled: attempting to add
             another node with this name will produce an Exception.
         """
         if name in self.children_names:
@@ -591,12 +591,12 @@ class CocosNode(object):
         Scheduled calls and worker actions begin or continue to perform.
 
         Good point to do ``push_handlers()`` if you have custom ones
-        
+
         Note:
-            A handler pushed there is near certain to require a 
-            ``pop_handlers()`` in the :meth:`on_exit` method (else it will be 
-            called even after being removed from the active scene, or if going 
-            on stage again it will be called multiple times for each event 
+            A handler pushed there is near certain to require a
+            ``pop_handlers()`` in the :meth:`on_exit` method (else it will be
+            called even after being removed from the active scene, or if going
+            on stage again it will be called multiple times for each event
             ocurrences).
         """
         self.is_running = True
@@ -764,12 +764,12 @@ class CocosNode(object):
         """Executes an :class:`.Action`.
         When the action is finished, it will be removed from the node's actions
         container.
-        
+
         To remove an action you must use the :meth:`do` return value to
         call :meth:`remove_action`.
 
         Arguments:
-            action (Action): 
+            action (Action):
                 Action that will be executed.
         Returns:
             Action: A clone of ``action``
@@ -792,12 +792,12 @@ class CocosNode(object):
         return a
 
     def remove_action(self, action):
-        """Removes an action from the node actions container, potentially 
+        """Removes an action from the node actions container, potentially
         calling ``action.stop()``.
 
         If action was running, :meth:`.Action.stop` is called.
         Mandatory interface to remove actions in the node actions container.
-        When skipping this there is the posibility to double call the 
+        When skipping this there is the posibility to double call the
         ``action.stop``
 
         Arguments:
@@ -858,7 +858,7 @@ class CocosNode(object):
 
         Arguments:
             dt (float):
-                The time in seconds that elapsed since that last time this 
+                The time in seconds that elapsed since that last time this
                 function was called.
         """
         for x in self.to_remove:
@@ -932,7 +932,7 @@ class CocosNode(object):
         return matrix * v
 
     def get_local_inverse(self):
-        """Returns an :class:`.euclid.Matrix3` with the local inverse 
+        """Returns an :class:`.euclid.Matrix3` with the local inverse
         transformation matrix.
 
         Returns:
@@ -947,7 +947,7 @@ class CocosNode(object):
         return self.inverse_transform_matrix
 
     def get_world_inverse(self):
-        """returns an :class:`.euclid.Matrix3` with the world inverse 
+        """returns an :class:`.euclid.Matrix3` with the world inverse
         transformation matrix.
 
         Returns:
